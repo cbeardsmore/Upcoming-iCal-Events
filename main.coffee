@@ -36,7 +36,7 @@ style: """
         font-size 20px
         border-bottom solid 1px clear
         padding-top 8px
-        padding-bottom 4px              
+        padding-bottom 4px
 """
 
 # Initial render
@@ -80,7 +80,7 @@ update: (output, domEl) ->
             date = date.substr(0,8)
             calendar = name_and_calendar[1].replace(')','')
             # Combine all fields
-            final = calendar + " - " + name + " - " + date
+            final = calendar + " - " + name + " at " + date
 
             # Add this HTML to previous
             $(domEl).append("""
