@@ -11,7 +11,9 @@ The [icalBuddy](http://hasseg.org/icalBuddy/) command-line utility tool must be 
 ![Screenshot](https://github.com/cbeardsmore/UpcomingEvents/blob/master/screenshot.png?raw=true)
 </center>
 
-## Styling
+## Bug Fixes
+
+This widget hasn't been tested extensively, but I'll try and keep it maintained. Email bug fixes to the email located in the JSON file.
 
 ## Credits
 
