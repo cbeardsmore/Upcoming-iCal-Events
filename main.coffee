@@ -23,20 +23,20 @@ style: """
     div
         display: block
         color white
-        font-size: 18px
-        font-weight: 100
+        font-size: 14px
+        font-weight: 450
         text-align left
 
     #head
         font-weight: bold
-        font-size 24px
+        font-size 20px
 
     #subhead
         font-weight: bold
-        font-size 20px
+        font-size 16px
         border-bottom solid 1px clear
-        padding-top 8px
-        padding-bottom 4px
+        padding-top 6px
+        padding-bottom 3px
 """
 
 # Initial render
@@ -56,6 +56,12 @@ update: (output, domEl) ->
         if ( line.indexOf("location") == -1 )
             newarray.push(line)
 
+    # Check that events actually exist or not
+    if ( lines.length < 2 )
+            $(domEl).append(""" <div id="subhead"> No Events </div> """)
+            return
+
+    # If events exist, print subheadings and data
     for i in [0...newarray.length-2]
 
         # Print today subheading
@@ -63,7 +69,7 @@ update: (output, domEl) ->
             if ($(domEl).text().indexOf('Today') == -1)
                 $(domEl).append("""<div id="subhead"> Today </div> """)
         # Print tomorrow subheading
-        else if ( newarray[i+1].indexOf("   tomorrow") != -1 )
+        else if ( newarray[i+1].indexOf("    tomorrow") != -1 )
             if ($(domEl).text().indexOf('Tomorrow') == -1)
                 $(domEl).append(""" <div id="subhead"> Tomorrow </div> """)
         # Print later subheading
@@ -76,6 +82,8 @@ update: (output, domEl) ->
             # Tokenize icalBuddy output string
             name_and_calendar = newarray[i].split('(')
             name = name_and_calendar[0].substr(1)
+            if ( name.length > 25 )
+                name = name.substr(0,25) + "..."
             date = ((newarray[i+1].split("at"))[1])
             date = date.substr(0,8)
             calendar = name_and_calendar[1].replace(')','')
