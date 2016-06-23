@@ -1,6 +1,6 @@
 {
   "name": "UpcomingEvents",
-  "description": "Shows UpcomingEvents built on icalBuddy",
+  "description": "Shows UpcomingEvents, using icalBuddy and Calendar",
   "author": "Connor Beardsmore",
   "email": "connor.beardsmore@gmail.com"
 }
