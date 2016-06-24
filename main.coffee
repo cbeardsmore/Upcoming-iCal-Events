@@ -1,10 +1,10 @@
-# Author: Connor Beardsmore <connor DOT beardsmore AT gmail DOT com>
-# Last Modified: 21/06/16
+# Author: Connor Beardsmore <connor.beardsmore@gmail.com>
+# Last Modified: 23/06/16
 
 # Bash command to pull events from icalBuddy
 # Set +2 to how many days you want to show
 # icalBuddy has more functionality that can be used here
-command: "/usr/local/bin/icalBuddy eventsToday+2"
+command: "/usr/local/bin/icalBuddy -n eventsToday+2"
 
 # Update is called once per hour
 refreshFrequency: "1h"
@@ -13,7 +13,7 @@ refreshFrequency: "1h"
 style: """
     top: 10px
     top: 1.3%
-    right: 17%
+    right: 12%
     color: black
     font-family: Helvetica
     background-color rgba(black, 0.5)
@@ -39,7 +39,7 @@ style: """
         padding-bottom 3px
 """
 
-# Initial render
+# Initial render for heading
 render: (output) -> """
     <div id="head"> Upcoming Events </div>
 """
@@ -82,17 +82,25 @@ update: (output, domEl) ->
             # Tokenize icalBuddy output string
             name_and_calendar = newarray[i].split('(')
             name = name_and_calendar[0].substr(1)
+            # Trim length of name field
             if ( name.length > 25 )
                 name = name.substr(0,25) + "..."
-            date = ((newarray[i+1].split("at"))[1])
-            date = date.substr(0,8)
+            # Trim date and format output
+            if ( ':' in newarray[i+1] )
+                date = ((newarray[i+1].split("at"))[1])
+                date = "at" + date.substr(0,9)
+            # If its an allday event, date field is empty
+            else
+                date = ""
+            # Cleanse output from icalBuddy
             calendar = name_and_calendar[1].replace(')','')
             # Combine all fields
-            final = calendar + " - " + name + " at " + date
+            final = calendar + " - " + name + date
 
-            # Add this HTML to previous
-            $(domEl).append("""
-            <div>
-                #{final}
-            </div>
-            """)
+            # Add this HTML to previous, only if it doesn't already exist
+            if ($(domEl).text().indexOf(final) == -1)
+                $(domEl).append("""
+                <div>
+                    #{final}
+                </div>
+                """)
