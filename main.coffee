@@ -58,8 +58,9 @@ update: (output, domEl) ->
 
     # Check that events actually exist or not
     if ( lines.length < 2 )
+        if ($(domEl).text().indexOf("No Events") == -1)
             $(domEl).append(""" <div id="subhead"> No Events </div> """)
-            return
+        return
 
     # If events exist, print subheadings and data
     for i in [0...newarray.length-2]
