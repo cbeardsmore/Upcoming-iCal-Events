@@ -1,4 +1,4 @@
-# UpcomingEvents
+# Upcoming-iCal-Events
 
 A widget made for [Übersicht](http://tracesof.net/uebersicht/) using *CoffeeScript*  
 Syncs upcoming events from your iCalendar  
