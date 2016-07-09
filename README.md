@@ -3,7 +3,7 @@
 A widget made for [Übersicht](http://tracesof.net/uebersicht/) using *CoffeeScript*  
 Syncs upcoming events from your iCalendar  
 
-The [icalBuddy](http://hasseg.org/icalBuddy/) command-line utility tool must be installed to run. If you install to a different directory than standard, you will need to change the path in the *command* line.
+The [icalBuddy](http://hasseg.org/icalBuddy/) command-line utility tool must be installed to run. If you install to a different directory than standard, you will need to change the path in the *command* line. A copy of the lastest version of iCal is included in this repository.
 
 ## Screenshot
 
