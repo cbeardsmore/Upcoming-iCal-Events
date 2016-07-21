@@ -1,4 +1,4 @@
-# Upcoming-iCal-Events
+# Upcoming iCal Events
 
 <center>
 ![Screenshot](https://github.com/cbeardsmore/UpcomingEvents/blob/master/screenshot.png?raw=true)
