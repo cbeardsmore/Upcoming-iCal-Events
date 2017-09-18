@@ -87,7 +87,7 @@ update: (output, domEl) ->
             if ( name.length > 25 )
                 name = name.substr(0,25) + "..."
             # Trim date and format output
-            if ( ':' in newarray[i+1] )
+            if (/(((0[1-9])|(1[0-2])):([0-5])(0|5)\s(A|P)M)/.test(newarray[i+1]))
                 date = ((newarray[i+1].split("at"))[1])
                 date = "at" + date.substr(0,9)
             # If its an allday event, date field is empty
