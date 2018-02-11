@@ -9,6 +9,9 @@ command: "/usr/local/bin/icalBuddy -n eventsToday+2"
 # Update is called once per hour
 refreshFrequency: "1h"
 
+# Show which calendar you pulled from
+showCalendar: true
+
 # CSS styling
 style: """
     top: 10px
@@ -49,34 +52,37 @@ update: (output, domEl) ->
     lines = output.split('\n')
     bullet = lines[0][0]
     newarray = []
+    dom = $(domEl)
 
-    # Copy lines to new array, ignoring all location lines
-    # This allows for easier tokenizing as array format is consistent
+    # Take out all lines that aren't event headers or dates
     for line in lines
-        if ( line.indexOf("location") == -1 )
+        if ( line.startsWith(bullet))
+            newarray.push(line)
+        if ( line.search('(today|tomorrow) at') != -1 )
             newarray.push(line)
 
-    # Check that events actually exist or not
-    if ( lines.length < 2 )
-        if ($(domEl).text().indexOf("No Events") == -1)
-            $(domEl).append(""" <div id="subhead"> No Events </div> """)
+    #Add No Events tag if nothing upcoming
+    if ( newarray.length == 0 )
+        # Don't add tag twice
+        if (dom.text().includes("No Events") == -1)
+            dom.append(""" <div id="subhead"> No Events </div> """)
         return
 
-    # If events exist, print subheadings and data
+    # Print subheadings and data for events
     for i in [0...newarray.length-2]
 
         # Print today subheading
-        if ( newarray[i+1].indexOf("today") != -1 )
-            if ($(domEl).text().indexOf('Today') == -1)
-                $(domEl).append("""<div id="subhead"> Today </div> """)
+        if (newarray[i+1].startsWith("    today"))
+            if (! dom.text().includes('Today'))
+                dom.append("""<div id="subhead">Today</div> """)
         # Print tomorrow subheading
-        else if ( newarray[i+1].indexOf("    tomorrow") != -1 )
-            if ($(domEl).text().indexOf('Tomorrow') == -1)
-                $(domEl).append(""" <div id="subhead"> Tomorrow </div> """)
+        else if ( newarray[i+1].startsWith("    tomorrow") )
+            if (! dom.text().includes('Tomorrow'))
+                dom.append(""" <div id="subhead">Tomorrow</div> """)
         # Print later subheading
-        else if ( newarray[i+1].indexOf("after") != -1 )
-            if ($(domEl).text().indexOf('Day After Tomorrow') == -1)
-                $(domEl).append(""" <div id="subhead"> Day After Tomorrow </div> """)
+        else if ( newarray[i+1].startsWith("    day after"))
+            if (dom.text().includes('Day After Tomorrow'))
+                dom.append(""" <div id="subhead">Day After Tomorrow</div> """)
 
         # Only print event newarray, starting with a bullet point
         if (newarray[i][0] == bullet)
@@ -99,8 +105,8 @@ update: (output, domEl) ->
             final = calendar + " - " + name + date
 
             # Add this HTML to previous, only if it doesn't already exist
-            if ($(domEl).text().indexOf(final) == -1)
-                $(domEl).append("""
+            if (dom.text().indexOf(final) == -1)
+                dom.append("""
                 <div>
                     #{final}
                 </div>
