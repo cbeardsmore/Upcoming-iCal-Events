@@ -97,8 +97,9 @@ update: (output, domEl) ->
             if ( name.length > MAX_CHARACTERS )
                 name = name.substr(0, MAX_CHARACTERS) + "..."
 
-            date = ((lines[i+1].split("at"))[1])
-            date = "at" + date.substr(0,9)
+            if (/(((0[1-9])|(1[0-2])):([0-5])(0|5)\s(A|P)M)/.test(lines[i+1]))
+                date = ((lines[i+1].split("at"))[1])
+                date = "at" + date.substr(0,9)
 
             # Combine all fields
             final = name
