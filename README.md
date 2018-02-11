@@ -1,17 +1,23 @@
 # Upcoming iCal Events
 
 <center>
-![Screenshot](https://github.com/cbeardsmore/UpcomingEvents/blob/master/screenshot.png?raw=true)
+
+![Screenshot](https://github.com/cbeardsmore/Upcoming-iCal-Events/blob/master/screenshot.png?raw=true)
 </center>
 
-A widget made for [Übersicht](http://tracesof.net/uebersicht/) using *CoffeeScript*  
-Syncs upcoming events from your iCalendar  
+A widget made for [Übersicht](http://tracesof.net/uebersicht/) using *CoffeeScript*, syncs upcoming events from your iCalendar  
 
-The [icalBuddy](http://hasseg.org/icalBuddy/) command-line utility tool must be installed to run. If you install to a different directory than standard, you will need to change the path in the *command* line.
+The [iCalBuddy](http://hasseg.org/icalBuddy/) command-line utility tool must be installed to run. If you install to a different directory than standard, you will need to change the path in the *command* line. iCalBuddy can be installed via brew:
+
+```
+brew install ical-buddy
+```
+
+If you want to show Google calendar events, just link your Google calendar to iCal, details can be found here: http://usingtechnologybetter.com/google-calendars-and-ical/
 
 ## Bug Fixes
 
-This widget hasn't been tested extensively, but I'll try and keep it maintained. Email bug fixes to the email located in the JSON file.
+This widget was originally designed in a few hours and was mainly for personal use, until 500 downloads happened. At the moment i'm trying to make it a bit more robust, so i'll be be pushing out an Update to the parser soon. Email bug fixes to the email located in the JSON file. 
 
 ## Credits
 
