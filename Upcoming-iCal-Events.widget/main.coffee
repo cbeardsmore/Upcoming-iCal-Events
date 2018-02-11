@@ -9,9 +9,6 @@ command: "/usr/local/bin/icalBuddy -n eventsToday+2"
 # Update is called once per hour
 refreshFrequency: "1h"
 
-# Show which calendar you pulled from
-showCalendar: true
-
 # CSS styling
 style: """
     top: 10px
@@ -54,6 +51,10 @@ update: (output, domEl) ->
     newarray = []
     dom = $(domEl)
 
+    # Show which calendar you pulled from
+    showCalendar =  true
+    maxCharacters = 25
+
     # Take out all lines that aren't event headers or dates
     for line in lines
         if ( line.startsWith(bullet))
@@ -70,7 +71,6 @@ update: (output, domEl) ->
 
     # Print subheadings and data for events
     for i in [0...newarray.length-2]
-
         # Print today subheading
         if (newarray[i+1].startsWith("    today"))
             if (! dom.text().includes('Today'))
@@ -81,33 +81,29 @@ update: (output, domEl) ->
                 dom.append(""" <div id="subhead">Tomorrow</div> """)
         # Print later subheading
         else if ( newarray[i+1].startsWith("    day after"))
-            if (dom.text().includes('Day After Tomorrow'))
+            if (!dom.text().includes('Day After Tomorrow'))
                 dom.append(""" <div id="subhead">Day After Tomorrow</div> """)
 
-        # Only print event newarray, starting with a bullet point
+        # Events start with bullet point
         if (newarray[i][0] == bullet)
-            # Tokenize icalBuddy output string
-            name_and_calendar = newarray[i].split('(')
-            name = name_and_calendar[0].substr(1)
-            # Trim length of name field
-            if ( name.length > 25 )
-                name = name.substr(0,25) + "..."
-            # Trim date and format output
+            nameAndCalendar = newarray[i].split('(')
+            name = nameAndCalendar[0].replace(bullet, '')
+            calendar = nameAndCalendar[1].replace(')','')
+
+            if ( name.length > maxCharacters )
+                name = name.substr(0,maxCharacters) + "..."
+
+            date = ""
+            # Magic regex
             if (/(((0[1-9])|(1[0-2])):([0-5])(0|5)\s(A|P)M)/.test(newarray[i+1]))
                 date = ((newarray[i+1].split("at"))[1])
                 date = "at" + date.substr(0,9)
-            # If its an allday event, date field is empty
-            else
-                date = ""
-            # Cleanse output from icalBuddy
-            calendar = name_and_calendar[1].replace(')','')
+
             # Combine all fields
-            final = calendar + " - " + name + date
+            final = name + date
+            if (showCalendar)
+                final = calendar + " - " + final
 
             # Add this HTML to previous, only if it doesn't already exist
-            if (dom.text().indexOf(final) == -1)
-                dom.append("""
-                <div>
-                    #{final}
-                </div>
-                """)
+            if (!dom.text().includes(final))
+                dom.append("""<div>#{final}</div>""")
