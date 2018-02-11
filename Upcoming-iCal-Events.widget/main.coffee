@@ -13,7 +13,7 @@ refreshFrequency: "1h"
 style: """
     top: 10px
     top: 1.3%
-    right: 12%
+    right: 1%
     color: black
     font-family: Helvetica
     background-color rgba(black, 0.5)
@@ -48,61 +48,64 @@ render: (output) -> """
 update: (output, domEl) ->
     lines = output.split('\n')
     bullet = lines[0][0]
-    newarray = []
     dom = $(domEl)
 
-    # Show which calendar you pulled from
-    showCalendar =  true
-    maxCharacters = 25
+    # Show which calendar you pulled from before event name
+    SHOW_CALENDER =  true
+    # Show full date including time
+    SHOW_DATE_TIME = false
+    # Characters after this value will be replaced with ...
+    MAX_CHARACTERS = 20
 
-    # Take out all lines that aren't event headers or dates
-    for line in lines
-        if ( line.startsWith(bullet))
-            newarray.push(line)
-        if ( line.search('(today|tomorrow) at') != -1 )
-            newarray.push(line)
+    # Filter out all lines that aren't event headers or dates
+    lines = lines.filter (x) -> ( ( x.startsWith(bullet) ) ||
+                         ( x.search('(today|tomorrow) at') != -1  ) )
 
     #Add No Events tag if nothing upcoming
-    if ( newarray.length == 0 )
+    if ( lines.length == 0 )
         # Don't add tag twice
-        if (dom.text().includes("No Events") == -1)
+        if (! dom.text().includes("No Events"))
             dom.append(""" <div id="subhead"> No Events </div> """)
         return
 
     # Print subheadings and data for events
-    for i in [0...newarray.length-2]
+    for i in [0...lines.length-2]
         # Print today subheading
-        if (newarray[i+1].startsWith("    today"))
+        header = ""
+        if (lines[i+1].startsWith("    today"))
             if (! dom.text().includes('Today'))
-                dom.append("""<div id="subhead">Today</div> """)
+                header = 'Today'
         # Print tomorrow subheading
-        else if ( newarray[i+1].startsWith("    tomorrow") )
+        else if ( lines[i+1].startsWith("    tomorrow") )
             if (! dom.text().includes('Tomorrow'))
-                dom.append(""" <div id="subhead">Tomorrow</div> """)
+                header = 'Tomorrow'
         # Print later subheading
-        else if ( newarray[i+1].startsWith("    day after"))
+        else if ( lines[i+1].startsWith("    day after"))
             if (!dom.text().includes('Day After Tomorrow'))
-                dom.append(""" <div id="subhead">Day After Tomorrow</div> """)
+                header = 'Day After Tomorrow'
+
+        # If required add in the header
+        if (header != "")
+            dom.append("""<div id="subhead">#{header}</div> """)
 
         # Events start with bullet point
-        if (newarray[i][0] == bullet)
-            nameAndCalendar = newarray[i].split('(')
+        if (lines[i][0] == bullet)
+            nameAndCalendar = lines[i].split('(')
             name = nameAndCalendar[0].replace(bullet, '')
             calendar = nameAndCalendar[1].replace(')','')
 
-            if ( name.length > maxCharacters )
-                name = name.substr(0,maxCharacters) + "..."
+            if ( name.length > MAX_CHARACTERS )
+                name = name.substr(0, MAX_CHARACTERS) + "..."
 
-            date = ""
-            # Magic regex
-            if (/(((0[1-9])|(1[0-2])):([0-5])(0|5)\s(A|P)M)/.test(newarray[i+1]))
-                date = ((newarray[i+1].split("at"))[1])
-                date = "at" + date.substr(0,9)
+            date = ((lines[i+1].split("at"))[1])
+            date = "at" + date.substr(0,9)
 
             # Combine all fields
-            final = name + date
-            if (showCalendar)
+            final = name
+            if (SHOW_CALENDER)
                 final = calendar + " - " + final
+            if (SHOW_DATE_TIME)
+                final += date
 
             # Add this HTML to previous, only if it doesn't already exist
             if (!dom.text().includes(final))

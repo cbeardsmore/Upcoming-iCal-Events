@@ -17,7 +17,7 @@ If you want to show Google calendar events, just link your Google calendar to iC
 
 ## Bug Fixes
 
-This widget was originally designed in a few hours and was mainly for personal use, until 500 downloads happened. At the moment i'm trying to make it a bit more robust, so i'll be be pushing out an Update to the parser soon. Email bug fixes to the email located in the JSON file. 
+This widget was originally designed in a few hours and was mainly for personal use, until 500 downloads happened. At the moment i'm trying to make it a bit more robust, so i'll be be pushing out an Update to the parser soon. If you find any issues or bugs, please log an Issue here.
 
 ## Credits
 
