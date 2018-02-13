@@ -51,7 +51,7 @@ update: (output, domEl) ->
     dom = $(domEl)
 
     # Show which calendar you pulled from before event name
-    SHOW_CALENDER =  true
+    SHOW_CALENDER = true
     # Show full date including time
     SHOW_DATE_TIME = false
     # Characters after this value will be replaced with ...
@@ -59,7 +59,7 @@ update: (output, domEl) ->
 
     # Filter out all lines that aren't event headers or dates
     lines = lines.filter (x) -> ( ( x.startsWith(bullet) ) ||
-                         ( x.search('(today|tomorrow) at') != -1  ) )
+                         ( x.search('(today|tomorrow)') != -1  ) )
 
     #Add No Events tag if nothing upcoming
     if ( lines.length == 0 )
