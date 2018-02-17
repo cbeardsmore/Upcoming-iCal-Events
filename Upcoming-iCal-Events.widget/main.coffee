@@ -52,6 +52,8 @@ update: (output, domEl) ->
 
     # Show which calendar you pulled from before event name
     SHOW_CALENDER = true
+    # Ignore specific calendars
+    IGNORE_CALENDER = [ 'name of calendar to ignore', 'other calendar etc' ]
     # Show full date including time
     SHOW_DATE_TIME = false
     # Characters after this value will be replaced with ...
@@ -68,7 +70,7 @@ update: (output, domEl) ->
             dom.append(""" <div id="subhead"> No Events </div> """)
         return
 
-    # Print subheadings and data for events
+    # Go over all events and append data into the DOM
     for i in [0...lines.length-2]
         # Print today subheading
         header = ""
@@ -93,6 +95,9 @@ update: (output, domEl) ->
             nameAndCalendar = lines[i].split('(')
             name = nameAndCalendar[0].replace(bullet, '')
             calendar = nameAndCalendar[1].replace(')','')
+
+            if IGNORE_CALENDER.includes(calendar)
+                continue
 
             if ( name.length > MAX_CHARACTERS )
                 name = name.substr(0, MAX_CHARACTERS) + "..."
