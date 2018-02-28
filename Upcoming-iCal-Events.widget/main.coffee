@@ -51,7 +51,7 @@ update: (output, domEl) ->
     dom = $(domEl)
 
     # Show which calendar you pulled from before event name
-    SHOW_CALENDER = true
+    SHOW_CALENDER = false
     # Ignore specific calendars
     IGNORE_CALENDER = [ 'name of calendar to ignore', 'other calendar etc' ]
     # Show full date including time
@@ -71,7 +71,7 @@ update: (output, domEl) ->
         return
 
     # Go over all events and append data into the DOM
-    for i in [0...lines.length-2]
+    for i in [0...lines.length-1]
         # Print today subheading
         header = ""
         if (lines[i+1].startsWith("    today"))
