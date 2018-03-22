@@ -1,5 +1,5 @@
 # Author: Connor Beardsmore <connor.beardsmore@gmail.com>
-# Last Modified: 23/06/16
+# Last Modified: 22/03/18
 
 # Bash command to pull events from icalBuddy
 # Set +2 to how many days you want to show
@@ -41,7 +41,6 @@ style: """
 
 # Initial render for heading
 render: (output) -> """
-    <div id="head"> Upcoming Events </div>
 """
 
 # Update when refresh occurs
@@ -49,6 +48,9 @@ update: (output, domEl) ->
     lines = output.split('\n')
     bullet = lines[0][0]
     dom = $(domEl)
+    
+    dom.empty()
+    dom.append("""<div id="head"> Upcoming Events </div>""")
 
     # Show which calendar you pulled from before event name
     SHOW_CALENDER = false
@@ -113,6 +115,5 @@ update: (output, domEl) ->
             if (SHOW_DATE_TIME)
                 final += date
 
-            # Add this HTML to previous, only if it doesn't already exist
-            if (!dom.text().includes(final))
-                dom.append("""<div>#{final}</div>""")
+            # Add this HTML to previous
+            dom.append("""<div>#{final}</div>""")
