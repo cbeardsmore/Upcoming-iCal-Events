@@ -57,13 +57,15 @@ update: (output, domEl) ->
     # Ignore specific calendars
     IGNORE_CALENDER = [ 'name of calendar to ignore', 'other calendar etc' ]
     # Show full date including time
-    SHOW_DATE_TIME = false
+    SHOW_DATE_TIME = true
     # Characters after this value will be replaced with ...
-    MAX_CHARACTERS = 20
+    MAX_CHARACTERS = 50
 
     # Filter out all lines that aren't event headers or dates
     lines = lines.filter (x) -> ( ( x.startsWith(bullet) ) ||
                          ( x.search('(today|tomorrow)') != -1  ) )
+
+    console.log(lines)
 
     #Add No Events tag if nothing upcoming
     if ( lines.length == 0 )
@@ -104,16 +106,19 @@ update: (output, domEl) ->
             if ( name.length > MAX_CHARACTERS )
                 name = name.substr(0, MAX_CHARACTERS) + "..."
 
-            if (/(((0[1-9])|(1[0-2])):([0-5])(0|5)\s(A|P)M)/.test(lines[i+1]))
-                date = ((lines[i+1].split("at"))[1])
-                date = "at" + date.substr(0,9)
+            date = ((lines[i+1].split("at"))[1])
+            if ( date == undefined )
+                date = "ALLDAY"
+            else
+                date = date.substr(0,9)
 
             # Combine all fields
             final = name
+            if (SHOW_DATE_TIME)
+                final = date + " - " + final
             if (SHOW_CALENDER)
                 final = calendar + " - " + final
-            if (SHOW_DATE_TIME)
-                final += date
+
 
             # Add this HTML to previous
             dom.append("""<div>#{final}</div>""")
