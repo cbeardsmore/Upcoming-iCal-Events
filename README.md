@@ -1,8 +1,6 @@
 # Upcoming iCal Events
 
-<center>
-![Screenshot](https://github.com/cbeardsmore/Upcoming-iCal-Events/blob/master/screenshot.png?raw=true)
-</center>
+![Screenshot](https://raw.githubusercontent.com/cbeardsmore/Upcoming-iCal-Events/master/screenshot.png)
 
 A widget made for [Übersicht](http://tracesof.net/uebersicht/) using *CoffeeScript*, syncs upcoming events from your iCalendar  
 
