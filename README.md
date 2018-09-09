@@ -1,7 +1,6 @@
 # Upcoming iCal Events
 
 <center>
-
 ![Screenshot](https://github.com/cbeardsmore/Upcoming-iCal-Events/blob/master/screenshot.png?raw=true)
 </center>
 
@@ -13,11 +12,20 @@ The [iCalBuddy](http://hasseg.org/icalBuddy/) command-line utility tool must be 
 brew install ical-buddy
 ```
 
-If you want to show Google calendar events, just link your Google calendar to iCal, details can be found here: http://usingtechnologybetter.com/google-calendars-and-ical/
+## Options
 
-## Bug Fixes
+There are a number of options making the widget more *customizable*. Modify these values in the *main.coffee* file:
 
-This widget was originally designed in a few hours and was mainly for personal use, until 500 downloads happened. At the moment i'm trying to make it a bit more robust, so i'll be be pushing out an Update to the parser soon. If you find any issues or bugs, please log an Issue here.
+```coffeescript
+# Show which calendar you pulled from before event name
+SHOW_CALENDER = false
+# Ignore specific calendars
+IGNORE_CALENDER = [ 'calendar name' ]
+# Show full date including time
+SHOW_DATE_TIME = true
+# Characters after this value will be replaced with ...
+MAX_CHARACTERS = 50
+```
 
 ## Credits
 
