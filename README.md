@@ -1,10 +1,12 @@
-# Upcoming iCal Events
-
-![Screenshot](https://raw.githubusercontent.com/cbeardsmore/Upcoming-iCal-Events/master/screenshot.png)
+## Upcoming iCal Events
 
 A widget made for [Übersicht](http://tracesof.net/uebersicht/) using *CoffeeScript*, syncs upcoming events from your iCalendar  
 
-The [iCalBuddy](http://hasseg.org/icalBuddy/) command-line utility tool must be installed to run. If you install to a different directory than standard, you will need to change the path in the *command* line. iCalBuddy can be installed via brew:
+<img src="screenshot.png" width="50%" height="50%">
+
+## Installation
+
+The [iCalBuddy](http://hasseg.org/icalBuddy/) command-line utility tool **must** be installed to run. iCalBuddy can be installed by clicking the *install.command* script OR via *brew* in the terminal:
 
 ```
 brew install ical-buddy
@@ -25,7 +27,12 @@ SHOW_DATE_TIME = true
 MAX_CHARACTERS = 50
 ```
 
+## Support
+
+- Please email me for bug fixes at *connor.beardsmore@gmail.com*
+- Or open an Issue on *github*
+
 ## Credits
 
-Entire widget is built around the [icalBuddy](http://hasseg.org/icalBuddy/) utility developed by [Ali Rantakari](https://github.com/ali-rantakari)  
-Styling is based to match the [Countdown-Widget](https://github.com/anuragbakshi/Countdown-Widget/tree/8619663c8da9827064369c9990a9c110afa8911c) developed by [Anurag Bakshi](https://github.com/anuragbakshi)
+- Entire widget is built around the [icalBuddy](http://hasseg.org/icalBuddy/) utility developed by [Ali Rantakari](https://github.com/ali-rantakari)  
+- Styling is based to match the [Countdown-Widget](https://github.com/anuragbakshi/Countdown-Widget/tree/8619663c8da9827064369c9990a9c110afa8911c) developed by [Anurag Bakshi](https://github.com/anuragbakshi)
