@@ -4,7 +4,7 @@ A widget made for [Übersicht](http://tracesof.net/uebersicht/) using *CoffeeScr
 
 <img src="screenshot.png" width="50%" height="50%">
 
-## Installation
+## [Download](https://github.com/cbeardsmore/Upcoming-iCal-Events/raw/master/Upcoming-iCal-Events.widget.zip)
 
 The [iCalBuddy](http://hasseg.org/icalBuddy/) command-line utility tool **must** be installed to run. iCalBuddy can be installed by clicking the *install.command* script OR via *brew* in the terminal:
 
