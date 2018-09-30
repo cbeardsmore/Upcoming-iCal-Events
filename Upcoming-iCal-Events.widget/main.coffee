@@ -16,7 +16,7 @@ style: """
     right: 1%
     color: black
     font-family: Helvetica
-    background-color rgba(black, 0.5)
+    background-color rgba(black, 0.3)
     padding 15px
     border-radius 5px
 
@@ -48,14 +48,14 @@ update: (output, domEl) ->
     lines = output.split('\n')
     bullet = lines[0][0]
     dom = $(domEl)
-    
+
     dom.empty()
     dom.append("""<div id="head"> Upcoming Events </div>""")
 
     # Show which calendar you pulled from before event name
     SHOW_CALENDER = false
     # Ignore specific calendars
-    IGNORE_CALENDER = [ 'name of calendar to ignore', 'other calendar etc' ]
+    IGNORE_CALENDER = ['Holidays in Hong Kong']
     # Show full date including time
     SHOW_DATE_TIME = true
     # Characters after this value will be replaced with ...
@@ -65,7 +65,7 @@ update: (output, domEl) ->
     lines = lines.filter (x) -> ( ( x.startsWith(bullet) ) ||
                          ( x.search('(today|tomorrow)') != -1  ) )
 
-    console.log(lines)
+    # console.log(lines)
 
     #Add No Events tag if nothing upcoming
     if ( lines.length == 0 )
@@ -97,8 +97,15 @@ update: (output, domEl) ->
         # Events start with bullet point
         if (lines[i][0] == bullet)
             nameAndCalendar = lines[i].split('(')
+
             name = nameAndCalendar[0].replace(bullet, '')
-            calendar = nameAndCalendar[1].replace(')','')
+
+            calendar = 'calendar'
+
+            # console.log(nameAndCalendar[1] == undefined)
+
+            if nameAndCalendar[1] != undefined
+                calendar = nameAndCalendar[1].replace(')','')
 
             if IGNORE_CALENDER.includes(calendar)
                 continue
