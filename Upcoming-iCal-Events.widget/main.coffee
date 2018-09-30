@@ -48,7 +48,6 @@ update: (output, domEl) ->
     lines = output.split('\n')
     bullet = lines[0][0]
     dom = $(domEl)
-
     dom.empty()
     dom.append("""<div id="head"> Upcoming Events </div>""")
 
@@ -125,4 +124,3 @@ update: (output, domEl) ->
 
             # Add this HTML to previous
             dom.append("""<div>#{final}</div>""")
-            
