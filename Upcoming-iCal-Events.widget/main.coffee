@@ -97,7 +97,7 @@ update: (output, domEl) ->
         if (lines[i][0] == bullet)
             nameAndCalendar = lines[i].split('(')
             name = nameAndCalendar[0].replace(bullet, '')
-            calendar = 'calendar'
+            calendar = 'No Calendar'
 
             if nameAndCalendar[1] != undefined
                 calendar = nameAndCalendar[1].replace(')','')
