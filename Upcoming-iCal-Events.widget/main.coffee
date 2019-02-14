@@ -48,7 +48,6 @@ update: (output, domEl) ->
     lines = output.split('\n')
     bullet = lines[0][0]
     dom = $(domEl)
-    
     dom.empty()
     dom.append("""<div id="head"> Upcoming Events </div>""")
 
@@ -100,7 +99,10 @@ update: (output, domEl) ->
             	continue
 
             name = nameAndCalendar[0].replace(bullet, '')
-            calendar = nameAndCalendar[1].replace(')','')
+            calendar = 'No Calendar'
+
+            if nameAndCalendar[1] != undefined
+                calendar = nameAndCalendar[1].replace(')','')
 
             if IGNORE_CALENDER.includes(calendar)
                 continue
