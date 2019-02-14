@@ -65,8 +65,6 @@ update: (output, domEl) ->
     lines = lines.filter (x) -> ( ( x.startsWith(bullet) ) ||
                          ( x.search('(today|tomorrow)') != -1  ) )
 
-    console.log(lines)
-
     #Add No Events tag if nothing upcoming
     if ( lines.length == 0 )
         # Don't add tag twice
@@ -97,6 +95,10 @@ update: (output, domEl) ->
         # Events start with bullet point
         if (lines[i][0] == bullet)
             nameAndCalendar = lines[i].split('(')
+
+            if nameAndCalendar.length < 2
+            	continue
+
             name = nameAndCalendar[0].replace(bullet, '')
             calendar = nameAndCalendar[1].replace(')','')
 
