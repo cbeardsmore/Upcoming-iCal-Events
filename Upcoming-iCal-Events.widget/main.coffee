@@ -71,6 +71,7 @@ render: (output) -> """
 
 # Update when refresh occurs
 update: (output, domEl) ->
+    dateRegex = '\\d{2}-[a-zA-Z]{3}-\\d{4}'
     lines = output.split('\n')
     bullet = lines[0][0]
     dom = $(domEl)
@@ -81,7 +82,7 @@ update: (output, domEl) ->
     lines = lines.filter (x) -> (
       ( x.startsWith(bullet) ) ||
       ( x.search('(today|tomorrow)') != -1  ) ||
-      ( x.search('\\d{2}-[a-zA-Z]{3}-\\d{4}') != -1  )
+      ( x.search(dateRegex) != -1  )
     )
 
     #Add No Events tag if nothing upcoming
@@ -108,7 +109,7 @@ update: (output, domEl) ->
             if (!dom.text().includes('Day After Tomorrow'))
                 header = 'Day After Tomorrow'
         # Print later subheading
-        else if ( lines[i+1].search('\\d{2}-[a-zA-Z]{3}-\\d{4}') != -1 )
+        else if ( lines[i+1].search(dateRegex) != -1 )
             day = lines[i+1].trim().substr(0,11)
             dayHeader = if USE_LATER_DATE then lines[i+1].trim().substr(0,11) else 'Later'
             if (!dom.text().includes(dayHeader))
