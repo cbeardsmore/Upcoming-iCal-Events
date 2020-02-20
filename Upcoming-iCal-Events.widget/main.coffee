@@ -2,12 +2,17 @@
 # Last Modified: 22/03/18
 
 # Customisations
+# Refresh Frequency
+REFRESH_FREQUENCY = "1h"
 # Number of days shown from today.
-NO_DAYS_TO_SHOW = 30
+NO_DAYS_TO_SHOW = 2
 # Show which calendar you pulled from before event name.
 SHOW_CALENDER = false
 # Ignore specific calendars.
-IGNORE_CALENDER = [ 'name/UUID of calendar to ignore', 'other calendar etc' ]
+IGNORE_CALENDERS = [
+    'name/UUID of thecalendar to ignore',
+    'other calendar etc'
+]
 # Show full date including time.
 SHOW_DATE_TIME = true
 # Characters after this value will be replaced with ...
@@ -17,18 +22,18 @@ USE_LATER_DATE = false
 
 # Construct bash command using options.
 # icalBuddy has more functionality that can be used here.
-# Refer to https://hasseg.org/icalBuddy/man.html for reference.
+# Refer to https://hasseg.org/icalBuddy/man.html
 executablePath = "/usr/local/bin/icalBuddy "
 baseCommand = ' eventsToday' + '+' + NO_DAYS_TO_SHOW
 options = "-n -eed -tf '%I:%M %p' "
-if IGNORE_CALENDER
-    options = options + '-ec ' + IGNORE_CALENDER.join(',')
+if IGNORE_CALENDERS
+    options = options + '-ec ' + IGNORE_CALENDERS.join(',')
 
 # Bash command to pull events from icalBuddy
 command: executablePath + options + baseCommand
 
 # Update is called once per hour
-refreshFrequency: "1h"
+refreshFrequency: REFRESH_FREQUENCY
 
 # CSS styling
 style: """
@@ -73,9 +78,11 @@ update: (output, domEl) ->
     dom.append("""<div id="head"> Upcoming Events </div>""")
 
     # Filter out all lines that aren't event headers or dates
-    lines = lines.filter (x) -> ( ( x.startsWith(bullet) ) ||
+    lines = lines.filter (x) -> (
+      ( x.startsWith(bullet) ) ||
       ( x.search('(today|tomorrow)') != -1  ) ||
-      ( x.search('\\d{2}-[a-zA-Z]{3}-\\d{4}') != -1  ))
+      ( x.search('\\d{2}-[a-zA-Z]{3}-\\d{4}') != -1  )
+    )
 
     #Add No Events tag if nothing upcoming
     if ( lines.length == 0 )
@@ -124,9 +131,6 @@ update: (output, domEl) ->
             if nameAndCalendar[1] != undefined
                 calendar = nameAndCalendar[1].replace(')','')
 
-            if IGNORE_CALENDER.includes(calendar)
-                continue
-
             if ( name.length > MAX_CHARACTERS )
                 name = name.substr(0, MAX_CHARACTERS) + "..."
 
@@ -136,9 +140,9 @@ update: (output, domEl) ->
 
             # Combine all fields
             final = name
-            if (SHOW_DATE_TIME)
+            if SHOW_DATE_TIME
                 final = datePrefix + date + " - " + final
-            if (SHOW_CALENDER)
+            if SHOW_CALENDER
                 final = calendar + " - " + final
 
             # Add this HTML to previous
