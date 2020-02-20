@@ -1,10 +1,31 @@
 # Author: Connor Beardsmore <connor.beardsmore@gmail.com>
 # Last Modified: 22/03/18
 
+# Customisations
+# Number of days shown from today.
+NO_DAYS_TO_SHOW = 30
+# Show which calendar you pulled from before event name.
+SHOW_CALENDER = false
+# Ignore specific calendars.
+IGNORE_CALENDER = [ 'name/UUID of calendar to ignore', 'other calendar etc' ]
+# Show full date including time.
+SHOW_DATE_TIME = true
+# Characters after this value will be replaced with ...
+MAX_CHARACTERS = 50
+# Use date for day after tomorrow.
+USE_LATER_DATE = false
+
+# Construct bash command using options.
+# icalBuddy has more functionality that can be used here.
+# Refer to https://hasseg.org/icalBuddy/man.html for reference.
+executablePath = "/usr/local/bin/icalBuddy "
+baseCommand = ' eventsToday' + '+' + NO_DAYS_TO_SHOW
+options = "-n -eed -tf '%I:%M %p' "
+if IGNORE_CALENDER
+    options = options + '-ec ' + IGNORE_CALENDER.join(',')
+
 # Bash command to pull events from icalBuddy
-# Set +2 to how many days you want to show
-# icalBuddy has more functionality that can be used here
-command: "/usr/local/bin/icalBuddy -n eventsToday+2"
+command: executablePath + options + baseCommand
 
 # Update is called once per hour
 refreshFrequency: "1h"
@@ -51,18 +72,10 @@ update: (output, domEl) ->
     dom.empty()
     dom.append("""<div id="head"> Upcoming Events </div>""")
 
-    # Show which calendar you pulled from before event name
-    SHOW_CALENDER = false
-    # Ignore specific calendars
-    IGNORE_CALENDER = [ 'name of calendar to ignore', 'other calendar etc' ]
-    # Show full date including time
-    SHOW_DATE_TIME = true
-    # Characters after this value will be replaced with ...
-    MAX_CHARACTERS = 50
-
     # Filter out all lines that aren't event headers or dates
     lines = lines.filter (x) -> ( ( x.startsWith(bullet) ) ||
-                         ( x.search('(today|tomorrow)') != -1  ) )
+      ( x.search('(today|tomorrow)') != -1  ) ||
+      ( x.search('\\d{2}-[a-zA-Z]{3}-\\d{4}') != -1  ))
 
     #Add No Events tag if nothing upcoming
     if ( lines.length == 0 )
@@ -75,6 +88,7 @@ update: (output, domEl) ->
     for i in [0...lines.length-1]
         # Print today subheading
         header = ""
+        day = ''
         if (lines[i+1].startsWith("    today"))
             if (! dom.text().includes('Today'))
                 header = 'Today'
@@ -82,10 +96,16 @@ update: (output, domEl) ->
         else if ( lines[i+1].startsWith("    tomorrow") )
             if (! dom.text().includes('Tomorrow'))
                 header = 'Tomorrow'
-        # Print later subheading
+        # Print day after tomorrow subheading
         else if ( lines[i+1].startsWith("    day after"))
             if (!dom.text().includes('Day After Tomorrow'))
                 header = 'Day After Tomorrow'
+        # Print later subheading
+        else if ( lines[i+1].search('\\d{2}-[a-zA-Z]{3}-\\d{4}') != -1 )
+            day = lines[i+1].trim().substr(0,11)
+            dayHeader = if USE_LATER_DATE then lines[i+1].trim().substr(0,11) else 'Later'
+            if (!dom.text().includes(dayHeader))
+                header = dayHeader
 
         # If required add in the header
         if (header != "")
@@ -96,7 +116,7 @@ update: (output, domEl) ->
             nameAndCalendar = lines[i].split('(')
 
             if nameAndCalendar.length < 2
-            	continue
+                continue
 
             name = nameAndCalendar[0].replace(bullet, '')
             calendar = 'No Calendar'
@@ -110,19 +130,16 @@ update: (output, domEl) ->
             if ( name.length > MAX_CHARACTERS )
                 name = name.substr(0, MAX_CHARACTERS) + "..."
 
-            date = ((lines[i+1].split("at"))[1])
-            if ( date == undefined )
-                date = "ALLDAY"
-            else
-                date = date.substr(0,9)
+            datePrefix = if (day && not USE_LATER_DATE) then day + ' ' else ''
+
+            date = ((lines[i+1].split("at"))[1]) or 'All day'
 
             # Combine all fields
             final = name
             if (SHOW_DATE_TIME)
-                final = date + " - " + final
+                final = datePrefix + date + " - " + final
             if (SHOW_CALENDER)
                 final = calendar + " - " + final
-
 
             # Add this HTML to previous
             dom.append("""<div>#{final}</div>""")
