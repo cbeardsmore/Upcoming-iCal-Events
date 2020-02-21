@@ -18,7 +18,7 @@ SHOW_DATE_TIME = true
 # Characters after this value will be replaced with ...
 MAX_CHARACTERS = 50
 # Use date for day after tomorrow.
-USE_LATER_DATE = false
+USE_DATE_AS_SUBHEADING = false
 # Label for all day events
 ALL_DAY_EVENT_LABEL = 'All Day'
 
@@ -114,7 +114,7 @@ update: (output, domEl) ->
         # Print later subheading
         else if ( lines[i+1].search(dateRegex) != -1 )
             day = lines[i+1].trim().substr(0,11)
-            dayHeader = if USE_LATER_DATE then lines[i+1].trim().substr(0,11) else 'Later'
+            dayHeader = if USE_DATE_AS_SUBHEADING then day else 'Later'
             if (!dom.text().includes(dayHeader))
                 header = dayHeader
 
@@ -138,9 +138,11 @@ update: (output, domEl) ->
             if ( name.length > MAX_CHARACTERS )
                 name = name.substr(0, MAX_CHARACTERS) + "..."
 
-            datePrefix = if (day && not USE_LATER_DATE) then day + ' ' else ''
+            datePrefix = if (day && not USE_DATE_AS_SUBHEADING) then day + ' ' else ''
 
-            date = ((lines[i+1].split("at"))[1]) or ALL_DAY_EVENT_LABEL
+            date = ((lines[i+1].split("at"))[1])
+            if !date?
+             date = ALL_DAY_EVENT_LABEL
 
             # Combine all fields
             final = name
