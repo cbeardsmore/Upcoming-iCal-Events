@@ -19,6 +19,8 @@ SHOW_DATE_TIME = true
 MAX_CHARACTERS = 50
 # Use date for day after tomorrow.
 USE_LATER_DATE = false
+# Label for all day events
+ALL_DAY_EVENT_LABEL = 'All Day'
 
 # Construct bash command using options.
 # icalBuddy has more functionality that can be used here.
@@ -56,6 +58,7 @@ style: """
     #head
         font-weight: bold
         font-size 20px
+        padding-bottom 6px
 
     #subhead
         font-weight: bold
@@ -137,7 +140,7 @@ update: (output, domEl) ->
 
             datePrefix = if (day && not USE_LATER_DATE) then day + ' ' else ''
 
-            date = ((lines[i+1].split("at"))[1]) or 'All day'
+            date = ((lines[i+1].split("at"))[1]) or ALL_DAY_EVENT_LABEL
 
             # Combine all fields
             final = name
