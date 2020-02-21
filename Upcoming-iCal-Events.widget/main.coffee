@@ -58,7 +58,6 @@ style: """
     #head
         font-weight: bold
         font-size 20px
-        padding-bottom 6px
 
     #subhead
         font-weight: bold
